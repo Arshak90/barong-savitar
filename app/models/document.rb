@@ -1,10 +1,11 @@
 class Document < ApplicationRecord
-  mount_uploader :upload, UploadUploader
 
   belongs_to :profile
-  validates :doc_type, :doc_number, :doc_expire, :upload, presence: true
 
-  validates :upload, length: { maximum: 10.megabytes }
+  has_many :images, dependent: :destroy
+  accepts_nested_attributes_for :images
+
+  validates :doc_type, :doc_number, :doc_expire, presence: true
   validates :doc_number, length: { maximum: 128 }
   validates_format_of :doc_expire,
                        with: /\d{4}\-\d{2}\-\d{2}/,
@@ -12,13 +13,12 @@ class Document < ApplicationRecord
 end
 
 # == Schema Information
-# Schema version: 20180126130155
+# Schema version: 20180227160402
 #
 # Table name: documents
 #
 #  id         :integer          not null, primary key
 #  profile_id :integer
-#  upload     :string(255)
 #  doc_type   :string(255)
 #  doc_number :string(255)
 #  doc_expire :date

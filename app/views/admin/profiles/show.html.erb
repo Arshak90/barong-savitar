@@ -56,8 +56,8 @@
     <thead>
     <tr>
       <th>ID</th>
+      <th>Proof of residency photo</th>
       <th>Doc Photo</th>
-      <th>Doc Name</th>
       <th>Doc Type</th>
       <th>Doc Number</th>
       <th>Doc Expire</th>
@@ -67,8 +67,12 @@
     <% @documents.each do |document| %>
         <tr>
           <td><%= document.id %></td>
-          <td><%= document.upload.present? ? link_to(image_tag(document.upload.url, width: '100', alt: 'Doc Preview'), asset_path(document.upload), target: '_blank') : ''%></td>
-          <td><%= document.upload&.file&.filename%></td>
+          <% document.images.each do |image| %>
+            <td>
+              <%= image.upload.present? ? image_tag(image.upload.url, width: '100', alt: 'Doc photo') : ''%>
+              <%= link_to(image.upload&.file&.filename, asset_path(image.upload), target: '_blank') %>
+            </td>
+          <% end %>
           <td><%= document.doc_type %></td>
           <td><%= document.doc_number %></td>
           <td><%= document.doc_expire %></td>
