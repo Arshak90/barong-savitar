@@ -10,13 +10,22 @@
       </ul>
     </div>
   <% end %>
-  <div class="row">
-    <div class="field col-12 ">
-      <label>Document upload</label>
-      <%= form.file_field :upload, id: :document_upload, class: 'dropify', 'data-allowed-file-extensions': 'png jpg jpeg', 'data-max-file-size': '10M', 'data-default-file': document.upload.present? ? image_url(document.upload.url) : false %>
-      </br>
+  <%= form.fields_for :images do |p| %>
+    <div class="row">
+      <div class="field col-12 ">
+        <label>Upload a proof of residency (can be gaz bill/electricity bill/internet bill/notice of taxes)</label>
+        <%= p.file_field :upload, name: "images[upload][]", id: :document_upload, class: 'dropify', 'data-allowed-file-extensions': 'png jpg jpeg', 'data-max-file-size': '10M', 'data-default-file': @images.upload.present? ? image_url(@images.upload.url) : false %>
+        </br>
+      </div>
     </div>
-  </div>
+    <div class="row">
+      <div class="field col-12 ">
+        <label>Document upload</label>
+        <%= p.file_field :upload, name: "images[upload][]", id: :document_upload, class: 'dropify', 'data-allowed-file-extensions': 'png jpg jpeg', 'data-max-file-size': '10M', 'data-default-file': @images.upload.present? ? image_url(@images.upload.url) : false %>
+        </br>
+      </div>
+    </div>
+  <% end %>
   <div class="row">
     <div class="field col-6">
       <%= form.label :doc_type, 'Document type' %>
@@ -26,7 +35,7 @@
     <div class="field form-group">
       <%= form.label :doc_expire, 'Document expiry' %>
       <div class="down-arrow">
-        <%= form.text_field :doc_expire, id: :document_doc_expire, class: 'datepicker-toggle form-control underlined', 'data-date-format': 'yyyy-mm-dd', 'data-date-start-date': '+1d', placeholder: 'Expiry date' %>
+        <%= form.text_field :doc_expire, id: :document_doc_expire, class: 'datepicker-toggle form-control underlined', 'data-date-format': 'yyyy-mm-dd', placeholder: 'Expiry date' %>
       </div>
     </div>
 
